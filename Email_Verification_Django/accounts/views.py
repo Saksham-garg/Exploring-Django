@@ -6,8 +6,10 @@ import uuid
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate,login
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required(login_url='/')
 def home(request):
     return render(request,'home.html')
 
@@ -77,7 +79,7 @@ def success(request):
 
 def send_email_token(email,token):
     subject = "Verify you account (Django App)"
-    message = f'Hi there,please click on this link to verify your account http://127.0.0.1:8001/verify/{token}'
+    message = f'Hi there,please click on this link to verify your account http://127.0.0.1:8000/verify/{token}'
     recipient_list = [email]
     email_from = settings.EMAIL_HOST_USER
     print(email_from)
