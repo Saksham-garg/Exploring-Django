@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+
+      <form class='container__form' method="post">
+        {% csrf_token %}
+        {% if messages %}
+            <div class="messages" style="background-color: tomato; padding: 20px 35px;">
+                {% for message in messages %}
+            {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <input type='text' name='username' placeholder='Username' class='container__inputField'>
+        <input type='email' name='email' placeholder='Email' class='container__inputField'>
+            <br>
+        <input type='password' name='password' placeholder='Password' class='container__inputField'>
+        <br>
+        <input type='submit' value='Register' class='container__sumbitButton'>
+      </form>
+      <div class='container__links'>
+        <a href='{% url "login_attempt"%}' class='container__link'>Already have an Account?</a>
+  
+      </div>
+
+{% endblock %}
