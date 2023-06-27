@@ -8,9 +8,15 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   </head>
   <body>
-    <div id="app">
+    <div id="app" class="mt-5 pt-5">
         <div class="container">
-            [[message]]
+            <div v-for="(ques,index) in question" :key="index" >
+                <p>[[ques.question]]</p>
+                <div v-for="(option,id) in ques.options" >
+                    <input @change="check(index,id,ques.id)" type="radio" :value="option" :name="`option-`+ques.id">[[option]]
+                </div>
+                <p :id="`show-option-`+ ques.id"></p>
+            </div>
         </div>
       </div>
 
@@ -21,18 +27,31 @@
           el: '#app',
           data: {
               message: 'Hello Vue!',
-              course_id: {{id}}
+              course_id: {{id}},
+              question:[]
           },
           methods: {
               greet: function(name) {
                   console.log('Hello from ' + name + '!')
+              },
+              check(question_index,option_id,question_id){
+                var get_ques = this.question[question_index]
+                var element = document.getElementById(`show-option-${question_id}`)
+        
+                if((get_ques.answer) == (option_id+1)){
+                    element.classList = 'text-success mt-3'
+                    element.innerText = "Right Answer"
+                }else{
+                    element.classList = 'text-danger mt-3'
+                    element.innerText = "Wrong Answer"
+                }
               }
           },
           mounted(){
                 fetch(`/api/${this.course_id}`).
                 then(res => res.json()).
                 then(data => {
-                  console.log(data)
+                  this.question = data;
                 })
         
           }
