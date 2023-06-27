@@ -29,6 +29,7 @@ def api_questions(request,id):
             options.append(raw_question.option_four)
         
         question['options'] = options
+        question['marks'] = raw_question.marks
         questions.append(question)
 
     return JsonResponse(questions,safe =False)

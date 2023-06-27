@@ -16,6 +16,7 @@ class Questions(models.Model):
     option_two = models.CharField(max_length=100)
     option_three = models.CharField(max_length=100,blank = True)
     option_four = models.CharField(max_length=100, blank= True)
+    marks = models.IntegerField(default=5)
 
     def __str__(self) -> str:
         return self.question

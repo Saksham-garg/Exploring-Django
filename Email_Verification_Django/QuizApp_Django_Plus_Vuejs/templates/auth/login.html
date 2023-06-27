@@ -1,0 +1,33 @@
+{% extends './base.html' %} 
+{% block content %}
+<form>
+  <div class="form-group">
+    <p class="lead">
+    <label for="inputEmail4">Email</label>
+</p>
+
+    <input
+      type="email"
+      class="form-control"
+      id="inputEmail4"
+      placeholder="Email"
+    />
+  </div>
+  <div class="form-group">
+    <p class="lead">
+    <label for="inputPassword4">Password</label>
+</p>
+    <input
+      type="password"
+      class="form-control"
+      id="inputPassword4"
+      placeholder="Password"
+    />
+  </div>
+  <p class="lead text-center">
+   Don't have account <a href="{% url 'register_attempt'%}" class="link-primary">Register</a>
+  </p>
+
+  <button type="submit" class="btn btn-primary">Sign in</button>
+</form>
+{% endblock %}
