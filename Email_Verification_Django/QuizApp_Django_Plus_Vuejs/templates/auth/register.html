@@ -1,6 +1,32 @@
 {% extends './base.html' %}
 {% block content %}
-<form >
+<form method="post">
+  {% csrf_token %}
+  {% if error %}
+    <div class="alert alert-warning" role="alert">
+      {{error}}
+    </div>
+  {% endif %}
+  <div class="form-group">
+    <label for="firstname">Email</label>
+    <input
+      type="text"
+      class="form-control"
+      id="firstname"
+      placeholder="First Name.."
+      name="firstname"
+    />
+  </div>
+  <div class="form-group">
+    <label for="lastname">Email</label>
+    <input
+      type="text"
+      class="form-control"
+      id="lastname"
+      placeholder="Last Name..."
+      name="lastname"
+    />
+  </div>
   <div class="form-group">
     <label for="inputEmail4">Email</label>
     <input
@@ -8,6 +34,7 @@
       class="form-control"
       id="inputEmail4"
       placeholder="Email"
+      name="email"
     />
   </div>
   <div class="form-group">
@@ -17,12 +44,13 @@
       class="form-control"
       id="inputPassword4"
       placeholder="Password"
+      name="password"
     />
   </div>
   <p class="lead text-center">
    Already have an account <a href="{% url 'login_attempt'%}" class="link-primary">Login</a>
   </p>
 
-  <button type="submit" class="btn btn-primary">Sign in</button>
+  <button type="submit" class="btn btn-primary">Register</button>
 </form>
 {% endblock %}
