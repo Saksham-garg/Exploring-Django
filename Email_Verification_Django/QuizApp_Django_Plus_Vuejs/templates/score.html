@@ -1,0 +1,32 @@
+{% extends './auth/base.html' %}
+{% block content %}
+    <div class="container">
+        <ul class="list-group active">
+     
+            <li class="list-group-item active">
+                Your Score
+            </li>
+            {% for s in score %}
+            <li class="list-group-item">
+                {{s.score}} -- {{s.course.course_name}}
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% if score %}
+        {% else %}
+        <p class="lead text-center mt-5">
+            You have not given any exam
+        </p>
+        <button type="button" class="w-full btn btn-warning p-0">
+            <a
+              class="nav-link active text-dark"
+              aria-current="page"
+              href="/"  
+              >Give Exam</a
+            >
+          </button>
+        {% endif %}
+    </div>
+
+{% endblock %}

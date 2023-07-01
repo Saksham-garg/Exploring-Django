@@ -1,23 +1,20 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  </head>
-  <body>
+{% extends './auth/base.html' %}
+{% block content %}
     <div id="app" class="mt-5 pt-5">
+      <form @submit.prevent="handleSubmit()">
+        {% csrf_token %}
         <div class="container">
-            <div v-for="(ques,index) in question" :key="index" >
-                <p>[[ques.question]]</p>
-                <div v-for="(option,id) in ques.options" >
-                    <input @change="check(index,id,ques.id)" type="radio" :value="option" :name="`option-`+ques.id">[[option]]
-                </div>
-                <p :id="`show-option-`+ ques.id"></p>
+          <div v-for="(ques,index) in question" :key="index" >
+            <p>[[index + 1]] [[ques.question]]</p>
+            <div v-for="(option,id) in ques.options" >
+              <input :id="`radio-`+index" @change="check(index,id,index)" type="radio" :value="option" :name="`option-`+index">[[option]]
             </div>
+            [[ques.id]]
+            <p :id="`show-option-`+ index"></p>
+          </div>
+          <button type="submit" class="btn btn-danger mr-3">Submit</button>
         </div>
+      </form>
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
@@ -28,7 +25,8 @@
           data: {
               message: 'Hello Vue!',
               course_id: {{id}},
-              question:[]
+              question:[],
+              solutions: []
           },
           methods: {
               greet: function(name) {
@@ -36,15 +34,38 @@
               },
               check(question_index,option_id,question_id){
                 var get_ques = this.question[question_index]
+    
                 var element = document.getElementById(`show-option-${question_id}`)
-        
-                if((get_ques.answer) == (option_id+1)){
+                var solution = { 'question':get_ques.question , 'option': option_id + 1}
+                /* if((get_ques.answer) == (option_id+1)){
                     element.classList = 'text-success mt-3'
                     element.innerText = "Right Answer"
                 }else{
                     element.classList = 'text-danger mt-3'
                     element.innerText = "Wrong Answer"
+                } */
+                this.solutions.push(solution)
+                const radios = document.querySelectorAll(`#radio-${question_id}`)
+                for(let i=0;i<radios.length;i++){
+                  radios[i].disabled = true
                 }
+              },
+              handleSubmit(){
+                fetch('api/check', {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json' ,
+                  'Content-Type': 'application/json; charset=utf-8'
+                  },
+                  body: JSON.stringify({
+                    'ques_data' : JSON.stringify(this.solutions),
+                    'courseId' : this.course_id
+                  }),
+                }).then(res => res.json())
+                .then(data =>{ 
+                  console.log(data)
+                  window.location = '/score'
+                })
               }
           },
           mounted(){
@@ -53,9 +74,9 @@
                 then(data => {
                   this.question = data;
                 })
-        
+                
           }
         });
       </script>
-  </body>
-</html>
+
+{% endblock %}

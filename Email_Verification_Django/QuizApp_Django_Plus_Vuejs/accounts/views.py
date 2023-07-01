@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
+
 # Create your views here.
 def register(request):
     if request.method == 'POST':
@@ -40,3 +41,8 @@ def auth_login(request):
             return render(request,'auth/login.html',context)
 
     return render(request,'auth/login.html')
+
+def logout_page(request):
+    logout(request)
+    return redirect('/auth/login')
+
