@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 # posts = [
 #     {
@@ -16,7 +17,7 @@ from .models import *
 #         'date_posted': 'August 28, 2018'
 #     }
 # ]
-
+@login_required(login_url='login')
 def home(request):
     context = {
         'posts':Post.objects.all()
@@ -25,3 +26,7 @@ def home(request):
 
 def about(request):
     return render(request,'blog_app/about.html')
+
+@login_required(login_url='login')
+def profile(request):
+    return render(request,'blog_app/profile.html')
