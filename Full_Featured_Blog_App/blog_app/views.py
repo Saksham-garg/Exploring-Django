@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 # posts = [
 #     {
@@ -27,6 +28,3 @@ def home(request):
 def about(request):
     return render(request,'blog_app/about.html')
 
-@login_required(login_url='login')
-def profile(request):
-    return render(request,'blog_app/profile.html')
